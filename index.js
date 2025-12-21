@@ -33,6 +33,18 @@ const {
   generalLimiter
 } = require('./middleware/security');
 
+// Global diagnostics to surface middleware chain issues
+process.on('unhandledRejection', (reason) => {
+  console.error('[unhandledRejection]', reason && reason.stack ? reason.stack : reason);
+});
+process.on('uncaughtException', (err) => {
+  console.error('[uncaughtException]', err && err.stack ? err.stack : err);
+});
+app.use((req, res, next) => {
+  console.log(`[trace] ${req.method} ${req.originalUrl} next typeof=${typeof next}`);
+  next();
+});
+
 // Security middleware
 app.use(securityHeaders);
 app.use(cors(corsOptions));

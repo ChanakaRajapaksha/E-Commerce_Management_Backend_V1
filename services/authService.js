@@ -65,7 +65,9 @@ class AuthService {
         }
       };
     } catch (error) {
-      throw new Error(error.message || 'Registration failed');
+      // Preserve original stack and surface the root cause
+      console.error('[authService.register error]', error && error.stack ? error.stack : error);
+      throw error;
     }
   }
 

@@ -4,6 +4,8 @@ const { body, validationResult } = require('express-validator');
 const handleValidationErrors = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    // Log validation issues for debugging 400 responses
+    console.error('[validation errors]', errors.array());
     return res.status(400).json({
       success: false,
       message: 'Validation failed',
@@ -64,7 +66,7 @@ const validateRegister = [
   body('phone')
     .optional()
     .trim()
-    .isMobilePhone()
+    .isMobilePhone('any')
     .withMessage('Please provide a valid phone number'),
 
   body('role')
@@ -151,7 +153,7 @@ const validateProfileUpdate = [
   body('phone')
     .optional()
     .trim()
-    .isMobilePhone()
+    .isMobilePhone('any')
     .withMessage('Please provide a valid phone number'),
 
   body('email')

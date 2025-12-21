@@ -118,24 +118,17 @@ userSchema.index({ 'refreshTokens.token': 1 });
 userSchema.index({ resetPasswordToken: 1 });
 
 // Pre-save middleware to hash password
-userSchema.pre('save', async function(next) {
-    // Only hash the password if it has been modified (or is new)
-    if (!this.isModified('password')) return next();
+// Use promise-based hook (no `next` arg) to avoid "next is not a function"
+userSchema.pre('save', async function() {
+    if (!this.isModified('password')) return;
 
-    try {
-        // Hash password with cost of 12
-        const salt = await bcrypt.genSalt(12);
-        this.password = await bcrypt.hash(this.password, salt);
-        next();
-    } catch (error) {
-        next(error);
-    }
+    const salt = await bcrypt.genSalt(12);
+    this.password = await bcrypt.hash(this.password, salt);
 });
 
-// Pre-save middleware to update updatedAt
-userSchema.pre('save', function(next) {
+// Pre-save middleware to update updatedAt (promise-based, no next)
+userSchema.pre('save', function() {
     this.updatedAt = Date.now();
-    next();
 });
 
 // Instance method to check password

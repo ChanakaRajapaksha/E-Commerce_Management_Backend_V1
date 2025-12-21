@@ -73,7 +73,8 @@ router.get(`/`, async (req, res) => {
   const totalPosts = await Product.countDocuments();
   const totalPages = Math.ceil(totalPosts / perPage);
 
-  if (page > totalPages) {
+  // Only return 404 if there are products but the requested page is beyond available pages
+  if (totalPosts > 0 && page > totalPages) {
     return res.status(404).json({ message: "Page not found" });
   }
 
@@ -119,7 +120,8 @@ router.get(`/catName`, async (req, res) => {
   const totalPosts = await Product.countDocuments();
   const totalPages = Math.ceil(totalPosts / perPage);
 
-  if (page > totalPages) {
+  // Only return 404 if there are products but the requested page is beyond available pages
+  if (totalPosts > 0 && page > totalPages) {
     return res.status(404).json({ message: "Page not found" });
   }
 
@@ -175,7 +177,8 @@ router.get(`/catId`, async (req, res) => {
   const totalPosts = await Product.countDocuments();
   const totalPages = Math.ceil(totalPosts / perPage);
 
-  if (page > totalPages) {
+  // Only return 404 if there are products but the requested page is beyond available pages
+  if (totalPosts > 0 && page > totalPages) {
     return res.status(404).json({ message: "Page not found" });
   }
 
@@ -231,7 +234,8 @@ router.get(`/subCatId`, async (req, res) => {
   const totalPosts = await Product.countDocuments();
   const totalPages = Math.ceil(totalPosts / perPage);
 
-  if (page > totalPages) {
+  // Only return 404 if there are products but the requested page is beyond available pages
+  if (totalPosts > 0 && page > totalPages) {
     return res.status(404).json({ message: "Page not found" });
   }
 

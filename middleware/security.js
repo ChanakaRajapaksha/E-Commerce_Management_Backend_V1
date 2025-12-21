@@ -41,6 +41,12 @@ const strictLimiter = createRateLimit(
 // CORS configuration
 const corsOptions = {
   origin: function (origin, callback) {
+    // Allow all origins in development mode
+    if (process.env.NODE_ENV !== 'production') {
+      return callback(null, true);
+    }
+
+    // In production, check against allowed origins
     const allowedOrigins = [
       'http://localhost:3000',
       'http://localhost:3001',
@@ -51,7 +57,9 @@ const corsOptions = {
     ].filter(Boolean);
 
     // Allow requests with no origin (mobile apps, Postman, etc.)
-    if (!origin) return callback(null, true);
+    if (!origin) {
+      return callback(null, true);
+    }
 
     if (allowedOrigins.includes(origin)) {
       callback(null, true);
@@ -109,7 +117,7 @@ const requestLogger = (req, res, next) => {
 
 // Error handling middleware
 const errorHandler = (err, req, res, next) => {
-  console.error('Error:', err);
+  console.error('Error stack:', err && err.stack ? err.stack : err);
 
   // Mongoose validation error
   if (err.name === 'ValidationError') {

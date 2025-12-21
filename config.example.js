@@ -3,7 +3,7 @@
 
 module.exports = {
   // Database Configuration
-  CONNECTION_STRING: 'mongodb+srv://username:password@cluster0.earth.mongodb.net/marketplace?retryWrites=true&w=majority',
+  CONNECTION_STRING: 'mongodb+srv://chanakaprasath456_db_user:MONGODBrcp123@ecommerce.2gvt2oq.mongodb.net/marketplace?retryWrites=true&w=majority&appName=ECommerce',
   
   // Server Configuration
   PORT: 5000,
